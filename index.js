@@ -13,9 +13,19 @@ async function del(filePath,linkToDelete,res){
         if (err) {
             res.status(500).send('Error deleting link.');
         } else {
-            const updatedLinks = data.split('\n').filter(link => link.trim() !== linkToDelete);
-            const updatedLinksText = updatedLinks.join('\n');
+            const updatedLinks = data.split('|:|:|');
+            let removed = false;
             
+            const updatedLinksFiltered = updatedLinks.filter(link => {
+                if (!removed && link.trim() === linkToDelete) {
+                    removed = true;
+                    return false; // Exclude this link
+                }
+                return true; // Keep this link
+            });
+            
+            const updatedLinksText = updatedLinksFiltered.join('|:|:|');
+            console.log(updatedLinks);
             fs.writeFile(filePath, updatedLinksText, (err) => {
                 if (err) {
                     res.status(500).send('Error deleting link.');
@@ -32,14 +42,15 @@ async function getd(filePath,res){
         if (err) {
             res.status(500).send('Error reading user links.');
         } else {
-            const links = data.split('\n').filter(link => link.trim() !== '');
+            const links = data.split('|:|:|').filter(link => link.trim() !== '');
             res.json(links);
         }
     });
 
 }
 async function add(filePath, link, res) {
-    fs.appendFile(filePath, `${link}\n`, 'utf8', (err) => {
+    console.log(link);
+    fs.appendFile(filePath, `${link}|:|:|`.trim(), 'utf8', (err) => {
         if (err) {
             res.status(500).send('Error adding link.');
         } else {
@@ -74,8 +85,6 @@ app.use(express.static('public'));
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-
-    // Perform validation or check credentials here (replace with your own logic)
     const success = userExist(username,password);
 
     res.json({ success });
@@ -105,59 +114,82 @@ app.use((req, res, next) => {
 });
 
 
-app.get('/adduser.html',(req,res)=>{
-    
+
+//req res for get/post(notes,pdfyt,links)
+app.get('/mylinks',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'pages', 'mylinks.html'));
+})
+app.get('/mynotes',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'pages', 'mynotes.html'));
 })
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', 'home.html'));
 });
-app.get('/mynotes', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pages', 'mynotes.html'));
-});
-app.get('/mylinks', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pages', 'mylinks.html'));
-});
+
 
 app.get('/getLinks', (req, res) => {
    const p=path.join(__dirname, 'public', 'data', 'userlinks.txt');
    getd(p,res);
 });
 
-app.post('/addLink/:link', (req, res) => {
-    const link = req.params.link;
-    const filePath = path.join(__dirname, 'public', 'data', 'userlinks.txt');
-    add(filePath, link, res);
+
+
+
+app.get('/getNotes', (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'data', 'usernotes.txt');
+    getd(filePath, res);
 });
 
-app.delete('/deleteLink/:link', (req, res) => {
-    const link = req.params.link;
-    const filePath = path.join(__dirname, 'public', 'data', 'userlinks.txt');
-    del(filePath,link,res);
-    
-});
-
-
-// Add note route
-app.post('/addNote/:note', (req, res) => {
-    const note = req.params.note;
+app.post('/addNote', (req, res) => {
+    const note = req.body.note;
     const filePath = path.join(__dirname, 'public', 'data', 'usernotes.txt');
     add(filePath, note, res);
 });
 
-// Delete note route
-app.delete('/deleteNote/:note', (req, res) => {
-    const note = req.params.note;
+app.delete('/deleteNote', (req, res) => {
+    const note = req.body.note;
     const filePath = path.join(__dirname, 'public', 'data', 'usernotes.txt');
     del(filePath, note, res);
 });
-//
-app.get('/getNotes', (req, res) => {
-    const note = req.params.note;
-    const filePath = path.join(__dirname, 'public', 'data', 'usernotes.txt');
-    console.log("getting");
-    getd(filePath, res);
 
+
+
+
+app.post('/addLink', (req, res) => {
+    const link = req.body.link;
+    const filePath = path.join(__dirname, 'public', 'data', 'userlinks.txt');
+    add(filePath, link, res);
 });
+
+app.delete('/deleteLink', (req, res) => {
+    const link = req.body.link;
+    const filePath = path.join(__dirname, 'public', 'data', 'userlinks.txt');
+    del(filePath, link, res);
+});
+
+
+
+
+
+// pdfyt
+app.get('/getpdfyt',(req,res)=>{
+    const filePath=path.join(__dirname,'public','data','pdfyt.txt');
+    console.log("getting-pdfyt");
+    getd(filePath,res);
+})
+
+app.post('/addpdfyt', (req, res) => {
+    const pdfyt = req.body.pdfyt;
+    const filePath = path.join(__dirname, 'public', 'data', 'pdfyt.txt');
+    add(filePath, pdfyt, res);
+});
+
+app.delete('/deletepdfyt', (req, res) => {
+    const pdfyt = req.body.pdfyt;
+    const filePath = path.join(__dirname, 'public', 'data', 'pdfyt.txt');
+    del(filePath, pdfyt, res);
+});
+
 app.use((req,res)=>{
     res.status(404).send("page not found");
 })

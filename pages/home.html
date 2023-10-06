@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="data/users.txt">
-    <link rel="stylesheet" href="data/userlinks.txt">
-    <link rel="stylesheet" href="data/usernotes.txt">
+    <link rel="stylesheet" href="../public/style.css">
+    <script src="script.js"></script>
+    <script src="home.js"></script>
 
 </head>
 <body>
@@ -40,9 +40,12 @@
         </nav>
     </header>
     <main>
-        <div class="">
-         
+        <h1 class="pdfythead">My PDF and Youtube Videos</h1>
+
+        <div class="pdfytcont">
+            
         </div>
+        <input id="ifr" class="note-input" type="text"><button class="add-link-button" onclick="addpdfyt(document.getElementById('ifr').value)">ADD </button>
     </main>
 </body>
 </html>

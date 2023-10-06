@@ -135,7 +135,7 @@ margin:0 6px;
     color: #ccc;
 }
 
-#add-link-button {
+.add-link-button {
     padding: 7px 15px;
     font-size: 14px;
     border: none;
@@ -145,12 +145,12 @@ margin:0 6px;
     border-radius: 5px;
 }
 
-#add-link-button:hover {
+.add-link-button:hover {
     background-color: #555;
 }
 
 /* Styles for My Notes section *//* Custom styles for the Add Note section */
-#note-input {
+.note-input {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 10px;
@@ -192,7 +192,7 @@ margin:0 6px;
 }
 
 
-.note-item button {
+.note-item button,.del {
     background-color: #ff3333;
     color: white;
     border: none;
@@ -203,7 +203,7 @@ margin:0 6px;
    height: 27px;
 }
 
-.note-item button:hover {
+.note-item button:hover,.del {
 
     background-color: #e53935;
 }
@@ -216,6 +216,7 @@ margin:0 6px;
     background-color: #ccc;
 }
 .note-item span {
+    word-break: break-all;
     display: inline-flex;
     word-wrap: break-word; /* Allow text to wrap */
 }
@@ -275,4 +276,29 @@ margin:0 6px;
 
 .login-button:hover {
     background-color: #0056b3;
+}
+
+
+/* home(pdf_yt */
+main h1{
+    margin: auto;
+    width: 100%;
+    background-color: #000000;
+    color: white;
+    text-align: center;
+    border-top: 3px solid rgb(255, 255, 255);
+}
+
+.pdfytcont{
+    background-color: #101112;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.pdfytcont iframe{
+ 
+    zoom: .8;
+}
+.pdfytcont div{
+    display: flex;
 }

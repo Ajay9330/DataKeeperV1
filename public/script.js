@@ -28,14 +28,20 @@ async function addLink() {
     const link = linkInput.value.trim();
 
     if (link !== '') {
-        await fetch(`/addLink/${encodeURIComponent(link)}`, { method: 'POST' });
-        linkInput.value = '';
+        await fetch('/addLink', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ link: link })})
         fetchLinks();
     }
 }
 
 async function deleteLink(link) {
-    await fetch(`/deleteLink/${encodeURIComponent(link)}`, { method: 'DELETE' });
+    await fetch('/deleteLink', { method: 'DELETE',headers:{
+        'Content-Type':'application/json'
+    }, body:JSON.stringify({link:link}) });
     fetchLinks();
 }
 
@@ -68,29 +74,30 @@ async function fetchNotes() {
 }
 
 async function addNote() {
-    try {
+  
         const noteInput = document.getElementById('note-input');
         const note = noteInput.value;
 
-        const response = await fetch(`/addNote/${note}`, { method: 'POST' });
-        const message = await response.text();
-
-        fetchNotes();  // Fetch notes again after adding a note
-        noteInput.value = '';
-    } catch (error) {
-        console.error('Error adding note:', error);
-    }
+         await fetch('/addNote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ note: note })})
+        fetchNotes();  
 }
 
 async function deleteNoteHandler(note) {
-    try {
-        const response = await fetch(`/deleteNote/${note}`, { method: 'DELETE' });
-        const message = await response.text();
+ await fetch('/deleteNote', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ note: note })
+    });
 
         fetchNotes();  // Fetch notes again after deleting a note
-    } catch (error) {
-        console.error('Error deleting note:', error);
-    }
+  
 }
 
 function clearCookie(cookieName) {
