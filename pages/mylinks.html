@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mylinks</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="data/users.txt">
+    <link rel="stylesheet" href="data/userlinks.txt">
+    <link rel="stylesheet" href="data/usernotes.txt">
+    <script src="script.js"></script>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+                <li>
+                    <a href="mylinks" class="active">MyLinks</a>
+                </li>
+                
+                <li>
+                    <a href="mynotes">MyNotes</a>
+                </li>
+                
+             
+          
+            </ul>
+            <div>
+                <li>
+                    <button onclick="logout()">Logout</button>
+                   </li>
+                   <img src="/data/krishna_wallpaper.jpg" alt="">
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="content">
+            <h1>My Links</h1>
+            <ul class="links-list" id="links-list">
+
+            </ul>
+            <input type="text" id="link-input" placeholder="Add a link">
+            <button id="add-link-button" onclick="addLink()">Add Link</button>
+        </div>
+        
+    </main>
+</body>
+</html>

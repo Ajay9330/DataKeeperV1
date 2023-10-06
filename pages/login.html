@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="formcontainer">
+        <form class="login-form">
+            <h2>Login</h2>
+            <div class="form-group">
+                <input class="input-field" type="text" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input class="input-field" type="password" id="password" placeholder="Password">
+            </div>
+            <button type="button" onclick="login()" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                document.cookie = `id=${username}; path=/`;
+                document.cookie = `pass=${password}; path=/`;
+                alert('Login successful! Cookies set.');
+                window.location.reload();
+            } else {
+                alert('Login failed. Invalid username or password.');
+            }
+        }
+    </script>
+</body>
+</html>
